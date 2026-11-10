@@ -12,6 +12,7 @@ namespace SpriteKind {
     export const smoke = SpriteKind.create()
     export const rifleguy = SpriteKind.create()
     export const rifleproj = SpriteKind.create()
+    export const mgbullet = SpriteKind.create()
 }
 function updateRepairIndicator () {
     repairIndicator.image.fill(0)
@@ -667,6 +668,7 @@ let repairProgress = 0
 let repairStart = 0
 let repairing = false
 let targetdeg = 0
+let machinegunbullet: Sprite = null
 let turning = false
 let deg = 0
 let amount = 0
@@ -741,6 +743,7 @@ stats.turnStats(true)
 let repairIndicator: Sprite = null
 let rifleShotsLeft: number[] = []
 let ii = 0
+let machinegunbullets = 100
 cantmove = false
 let repairTime = 4000
 let spareParts = 3
@@ -759,7 +762,7 @@ namespace userconfig {
     export const ARCADE_SCREEN_WIDTH = 240
 }
 zoom = 0
-let ammotext = textsprite.create("Ammo Left:" + convertToText(ammo), 1, 15)
+let ammotext = textsprite.create("Ammo Left:" + convertToText(ammo) + "ㅤMG Ammo Left:" + convertToText(machinegunbullets), 1, 15)
 let reloadIndicator = sprites.create(image.create(54, 8), SpriteKind.Player)
 reloadTime = 6500
 let zoomtext = textsprite.create("Zoom:" + convertToText(zoom), 1, 15)
@@ -768,7 +771,7 @@ shellready.x = 10
 shellready.y = 16
 shellready.setFlag(SpriteFlag.RelativeToCamera, true)
 ammotext.setFlag(SpriteFlag.RelativeToCamera, true)
-ammotext.x = 45
+ammotext.x = 180
 ammotext.y = 25
 zoomtext.setFlag(SpriteFlag.RelativeToCamera, true)
 zoomtext.x = 207
@@ -1054,7 +1057,7 @@ enemytonkturret = sprites.create(img`
     .......fffffff......
     ....................
     `, SpriteKind.Enemy)
-tiles.placeOnTile(enemytank, tiles.getTileLocation(34, 10))
+tiles.placeOnTile(enemytank, tiles.getTileLocation(64, 10))
 enemytank.scale = 1.1
 turret.z = 1
 enemytonkgun.z = 1
@@ -1215,92 +1218,82 @@ for (let value222 of tiles.getTilesByType(assets.tile`myTile4`)) {
     spriteNextShot.push(game.runtime() + 5000)
 }
 for (let value2222 of tiles.getTilesByType(sprites.castle.rock0)) {
-    rockCollider = sprites.create(img`
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        `, SpriteKind.collisiondetecter)
-    tiles.placeOnTile(rockCollider, value2222)
-    rockCollider.setFlag(SpriteFlag.Invisible, true)
+    if (tiles.tileAtLocationIsWall(value2222)) {
+    	
+    } else {
+        rockCollider = sprites.create(img`
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            `, SpriteKind.collisiondetecter)
+        tiles.placeOnTile(rockCollider, value2222)
+        rockCollider.setFlag(SpriteFlag.Invisible, true)
+    }
 }
 for (let value22222 of tiles.getTilesByType(sprites.castle.rock1)) {
-    rockCollider = sprites.create(img`
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        `, SpriteKind.collisiondetecter)
-    tiles.placeOnTile(rockCollider, value22222)
-    rockCollider.setFlag(SpriteFlag.Invisible, true)
+    if (tiles.tileAtLocationIsWall(value22222)) {
+    	
+    } else {
+        rockCollider = sprites.create(img`
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            `, SpriteKind.collisiondetecter)
+        tiles.placeOnTile(rockCollider, value22222)
+        rockCollider.setFlag(SpriteFlag.Invisible, true)
+    }
 }
 for (let value23 of tiles.getTilesByType(sprites.castle.rock2)) {
-    rockCollider = sprites.create(img`
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        `, SpriteKind.collisiondetecter)
-    tiles.placeOnTile(rockCollider, value23)
-    rockCollider.setFlag(SpriteFlag.Invisible, true)
-}
-for (let value6_7 of tiles.getTilesByType(assets.tile`myTile13`)) {
-    rockCollider = sprites.create(img`
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-        `, SpriteKind.collisiondetecter)
-    tiles.placeOnTile(rockCollider, value6_7)
-    rockCollider.setFlag(SpriteFlag.Invisible, true)
+    if (tiles.tileAtLocationIsWall(value23)) {
+    	
+    } else {
+        rockCollider = sprites.create(img`
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+            `, SpriteKind.collisiondetecter)
+        tiles.placeOnTile(rockCollider, value23)
+        rockCollider.setFlag(SpriteFlag.Invisible, true)
+    }
 }
 for (let value9 of tiles.getTilesByType(assets.tile`myTile15`)) {
     rockCollider = sprites.create(img`
@@ -1434,7 +1427,7 @@ for (let value14 of tiles.getTilesByType(assets.tile`myTile26`)) {
     tiles.placeOnTile(rockCollider, value14)
     rockCollider.setFlag(SpriteFlag.Invisible, true)
 }
-game.showLongText("Use WASD to move, mouse to aim, left click to shoot, mouse wheel to zoom in, left shift to enter scope,F to repair and = to heal crew.", DialogLayout.Full)
+game.showLongText("Use WASD to move, mouse to aim, left click to shoot, mouse wheel to zoom in, left shift to enter scope, and F to repair.", DialogLayout.Full)
 game.onUpdate(function () {
     if (scoped) {
         dx = mouseX - 120
@@ -1485,7 +1478,7 @@ forever(function () {
         shellready.setText("Reloading")
     }
     zoomtext.setText("Zoom:" + convertToText(Math.round(zoom * 10) / 10))
-    ammotext.setText("Ammo Left:" + convertToText(ammo))
+    ammotext.setText("Ammo Left:" + convertToText(ammo) + "  MG Ammo Left:" + convertToText(machinegunbullets))
     if (controller.up.isPressed()) {
         if (!(frontBlocked)) {
             if (speed >= maxSpeed) {
@@ -1554,6 +1547,48 @@ forever(function () {
     }
     transformSprites.rotateSprite(hull, deg)
     spriteutils.setVelocityAtAngle(hull, spriteutils.degreesToRadians(deg), speed)
+    if (browserEvents.Space.isPressed()) {
+        if (machinegunbullets > 0) {
+            if (Math.abs(difference) <= 2) {
+                scene.cameraShake(1, 200)
+                special_effects_thingy = sprites.create(img`
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    `, SpriteKind.specialeffect)
+                spriteutils.placeAngleFrom(
+                special_effects_thingy,
+                spriteutils.angleFrom(turret, aimer),
+                15,
+                turret
+                )
+                extraEffects.createSpreadEffectOnAnchor(special_effects_thingy, myEffect, 100, 2, 2)
+                machinegunbullet = sprites.create(img`
+                    . . . 
+                    f f f 
+                    . . . 
+                    `, SpriteKind.mgbullet)
+                transformSprites.rotateSprite(machinegunbullet, turretdeg)
+                machinegunbullet.setPosition(turret.x, turret.y)
+                spriteutils.setVelocityAtAngle(machinegunbullet, spriteutils.degreesToRadians(turretdeg), 200)
+                machinegunbullets += -1
+                pause(50)
+            }
+        }
+    }
 })
 forever(function () {
     turret.setPosition(hull.x, hull.y)
