@@ -1,0 +1,12 @@
+{
+    "image3": {
+        "data": "hwQCAAIAAAD/AAAA/wAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "enemybullet"
+    },
+    "*": {
+        "mimeType": "image/x-mkcd-f4",
+        "dataEncoding": "base64",
+        "namespace": "myImages"
+    }
+}
