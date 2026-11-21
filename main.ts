@@ -232,6 +232,18 @@ spriteutils.onSpriteKindUpdateInterval(SpriteKind.rifleguy, 100, function (sprit
         })
     }
 })
+sprites.onOverlap(SpriteKind.mgbullet, SpriteKind.rifleguy, function (sprite, otherSprite) {
+    sprites.destroy(sprite)
+    if (Math.percentChance(40)) {
+        sprites.destroy(otherSprite)
+    }
+})
+sprites.onOverlap(SpriteKind.mgbullet, SpriteKind.spriteguy, function (sprite, otherSprite) {
+    sprites.destroy(sprite)
+    if (Math.percentChance(40)) {
+        sprites.destroy(otherSprite)
+    }
+})
 browserEvents.onMouseMove(function (x, y) {
     mouseX = x
     mouseY = y
