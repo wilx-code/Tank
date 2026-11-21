@@ -13,7 +13,8 @@
         "arcade-tilemap-a-star": "github:jwunderl/arcade-tilemap-a-star#v0.4.0",
         "pxt-sight": "github:felixtsu/pxt-sight#v0.2.2",
         "arcade-story": "github:microsoft/arcade-storytelling#v1.0.3",
-        "Stats": "github:UnsignedArduino/Stats#758e35856bd5565e5d0e25c95cccfac79b7fc168"
+        "Stats": "github:UnsignedArduino/Stats#758e35856bd5565e5d0e25c95cccfac79b7fc168",
+        "sound effects": "github:klausw3/pxt-sound-effects#v1.2.0"
     },
     "files": [
         "main.blocks",
@@ -30,7 +31,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "4.1.27",
+        "target": "4.1.28",
         "targetId": "arcade"
     },
     "supportedTargets": [

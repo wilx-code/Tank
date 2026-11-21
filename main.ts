@@ -755,7 +755,7 @@ repairIndicator.y = 150
 repairIndicator.image.fill(0)
 repairIndicator.image.drawCircle(12, 12, 10, 7)
 repairIndicator.image.drawCircle(12, 12, 8, 0)
-maxSpeed = 120
+maxSpeed = 150
 ammo = 40
 namespace userconfig {
     export const ARCADE_SCREEN_HEIGHT = 180
